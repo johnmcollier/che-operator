@@ -22,20 +22,20 @@ The project is in its early development and breaking changes are possible.
 
 **IMPORTANT! Cluster Admin privileges are required**
 
-```
-./deploy.sh $namespace
-```
-
-The script will create sa, role, role binding, operator deployment, CRD and CR.
-
-Wait until Che deployment is scaled to 1 and Che route is created.
-
 When on pure k8s, make sure you provide a global ingress domain in `deploy/crds/org_v1_che_cr.yaml` for example:
 
 ```bash
   k8s:
     ingressDomain: '192.168.99.101.nip.io'
 ```
+
+Then run:
+```
+./deploy.sh $namespace
+```
+
+The script will create sa, role, role binding, operator deployment, CRD and CR. Wait until Che deployment is scaled to 1 and Che route is created.
+
 
 ### OpenShift oAuth
 
@@ -72,16 +72,9 @@ You can then use the resulting image in operator deployment (deploy/operator.yam
 
 ## Build and Deploy to a local cluster:
 
-There's a little script that will build a local Docker image and deploy an operator to a selected namespace,
-as well as create service account, role, role binding, CRD and example CR.
-
-```
-oc new-project $namespace
-build_deploy_local.sh $namespace
-
-```
-
-The above method will work only with Docker 17.x (does not works if you want to build in MiniShift/MiniKube). Mostly useful if you run `oc cluster up` locally.
+1. Build the operator image with docker
+2. Add the image to the operator's deployment (deploy/operator.yaml)
+3. Run `./deploy.sh <namespace>` to deploy your operator image
 
 ## How to Run/Debug Locally
 

@@ -16,9 +16,9 @@ metadata:
 spec:
   server:
     # server image used in Che deployment
-    cheImage: ''
+    cheImage: 'eclipse/che-server'
     # tag of an image used in Che deployment
-    cheImageTag: ''
+    cheImageTag: 'nightly'
     # defaults to `che`. When set to `codeready`, CodeReady Workspaces is deployed
     # the difference is in images, labels, exec commands
     cheFlavor: ''
@@ -56,6 +56,8 @@ spec:
     chePostgresDb: ''
     # Postgres deployment in format image:tag. Defaults to registry.access.redhat.com/rhscl/postgresql-96-rhel7:1-25
     postgresImage: ''
+    # Enables debug logging in Postgres container if set to true
+    postgresDebugLogs: false
   storage:
     # persistent volume claim strategy for Che server. Can be common (all workspaces PVCs in one volume),
     # per-workspace (one PVC per workspace for all declared volumes) and unique (one PVC per declared volume). Defaults to common
@@ -97,7 +99,7 @@ spec:
     keycloakImage: ''
   k8s:
     # your global ingress domain
-    ingressDomain: '192.168.99.101.nip.io'
+    ingressDomain: '10.111.39.88.nip.io'
     # kubernetes.io/ingress.class, defaults to nginx
     ingressClass: ''
     # IngressStrategy is the way ingresses are created.
