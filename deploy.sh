@@ -25,4 +25,4 @@ sleep 2
 #oc apply -f ${BASE_DIR}/deploy/cluster_role.yaml -n=$1
 
 kubectl apply -f ${BASE_DIR}/deploy/operator.yaml
-kubectl apply -f ${BASE_DIR}/deploy/crds/org_v1_che_cr.yaml
+#kubectl apply -f ${BASE_DIR}/deploy/crds/org_v1_che_cr.yaml

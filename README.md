@@ -22,7 +22,9 @@ The project is in its early development and breaking changes are possible.
 
 **IMPORTANT! Cluster Admin privileges are required**
 
-When on pure k8s, make sure you provide a global ingress domain in `deploy/crds/org_v1_che_cr.yaml` for example:
+First, install the operator by running `./deploy.sh`. The script will create sa, role, role binding, operator deployment, and CRD.
+
+When on pure k8s, make sure you provide a global ingress domain in `examples/che.yaml` for example:
 
 ```bash
   k8s:
@@ -31,10 +33,10 @@ When on pure k8s, make sure you provide a global ingress domain in `deploy/crds/
 
 Then run:
 ```
-./deploy.sh $namespace
+kubectl create -f examples/che.yaml
 ```
 
-The script will create sa, role, role binding, operator deployment, CRD and CR. Wait until Che deployment is scaled to 1 and Che route is created.
+This will create a Che installation on your cluster. Look through che.yaml to see any further configurations you want to set.
 
 
 ### OpenShift oAuth
