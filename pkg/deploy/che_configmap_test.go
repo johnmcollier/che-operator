@@ -12,9 +12,10 @@
 package deploy
 
 import (
-	orgv1 "github.com/eclipse/che-operator/pkg/apis/org/v1"
 	"strings"
 	"testing"
+
+	orgv1 "github.com/eclipse/che-operator/pkg/apis/org/v1"
 )
 
 func TestNewCheConfigMap(t *testing.T) {
@@ -26,14 +27,19 @@ func TestNewCheConfigMap(t *testing.T) {
 	cr.Spec.Server.CheHost = "myhostname.com"
 	cr.Spec.Server.TlsSupport = true
 	cr.Spec.Auth.OpenShiftOauth = true
+	cr.Spec.Server.CheWorkspaceClusterRole = "che-testrole"
 	cheEnv := GetConfigMapData(cr)
 	testCm := NewCheConfigMap(cr, cheEnv)
 	identityProvider := testCm.Data["CHE_INFRA_OPENSHIFT_OAUTH__IDENTITY__PROVIDER"]
+	workspaceRole := testCm.Data["CHE_INFRA_KUBERNETES_CLUSTER__ROLE__NAME"]
 	protocol := strings.Split(testCm.Data["CHE_INFRA_KUBERNETES_BOOTSTRAPPER_BINARY__URL"], "://")[0]
 	if identityProvider != "openshift-v3" {
 		t.Errorf("Test failed. Expecting identity provider to be 'openshift-v3' while got '%s'", identityProvider)
 	}
 	if protocol != "https" {
 		t.Errorf("Test failed. Expecting 'https' protocol, got '%s'", protocol)
+	}
+	if workspaceRole != cr.Spec.Server.CheWorkspaceClusterRole {
+		t.Errorf("Test failed. Expected workspace clusterrole to be '%s', got '%s'", cr.Spec.Server.CheWorkspaceClusterRole, workspaceRole)
 	}
 }

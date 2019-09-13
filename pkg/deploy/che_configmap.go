@@ -64,6 +64,7 @@ type CheConfigMap struct {
 	PluginRegistryUrl            string `json:"CHE_WORKSPACE_PLUGIN__REGISTRY__URL,omitempty"`
 	DevfileRegistryUrl           string `json:"CHE_WORKSPACE_DEVFILE__REGISTRY__URL,omitempty"`
 	WebSocketEndpointMinor       string `json:"CHE_WEBSOCKET_ENDPOINT__MINOR"`
+	WorkspaceClusterRole         string `json:"CHE_INFRA_KUBERNETES_CLUSTER__ROLE__NAME"`
 }
 
 func GetCustomConfigMapData() (cheEnv map[string]string) {
@@ -157,6 +158,7 @@ func GetConfigMapData(cr *orgv1.CheCluster) (cheEnv map[string]string) {
 	pluginRegistryUrl := cr.Status.PluginRegistryURL
 	cheLogLevel := util.GetValue(cr.Spec.Server.CheLogLevel, DefaultCheLogLevel)
 	cheDebug := util.GetValue(cr.Spec.Server.CheDebug, DefaultCheDebug)
+	workspaceClusterRole := util.GetValue(cr.Spec.Server.CheWorkspaceClusterRole, "")
 
 	data := &CheConfigMap{
 		CheMultiUser:                 "true",
@@ -193,6 +195,7 @@ func GetConfigMapData(cr *orgv1.CheCluster) (cheEnv map[string]string) {
 		WorkspaceNoProxy:             cheWorkspaceNoProxy,
 		PluginRegistryUrl:            pluginRegistryUrl,
 		DevfileRegistryUrl:           devfileRegistryUrl,
+		WorkspaceClusterRole:         workspaceClusterRole,
 	}
 
 	out, err := json.Marshal(data)
